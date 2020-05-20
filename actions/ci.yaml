@@ -11,7 +11,11 @@ jobs:
     runs-on: 'ubuntu-18.04'
     steps:
       - uses: actions/checkout@v2
-      - $include: install-rust-msrv
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          components: rustfmt
       - uses: actions-rs/cargo@v1
         with:
           command: fmt

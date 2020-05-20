@@ -14,9 +14,9 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
         with:
-          toolchain: 1.40.0
+          toolchain: stable
           override: true
-          components: "rustfmt,clippy"
+          components: rustfmt
       - uses: actions-rs/cargo@v1
         with:
           command: fmt
@@ -29,7 +29,7 @@ jobs:
         with:
           toolchain: 1.40.0
           override: true
-          components: "rustfmt,clippy"
+          components: clippy
       - uses: actions-rs/cargo@v1
         with:
           command: clippy

@@ -2,4 +2,4 @@ uses: actions-rs/toolchain@v1
 with:
   toolchain: 1.40.0
   override: true
-  components: rustfmt,clippy
+  components: clippy
