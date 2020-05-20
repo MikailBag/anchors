@@ -11,7 +11,7 @@ anchors
 ### Docker
 ```bash
 # Use
-docker run --interactive --rm https://docker.pkg.github.com/mikailbag/anchors/anchors:master
+docker run --interactive --rm https://docker.pkg.github.com/mikailbag/anchors/anchors:master -v $actions_dir:/tpl:ro -v `pwd`/.github/workflows:/.github/workflows 
 ```
 ## Usage
 Create new directory in repo, which will contain your workflows. In this example, it will be `ci/workflows`.
