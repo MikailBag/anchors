@@ -11,7 +11,8 @@ fn main() -> anyhow::Result<()> {
                 .long_help(
                     "each yaml file in this dir will be expanded \
                      to Github Actions workflow",
-                ),
+                )
+                .required(true),
         )
         .arg(
             clap::Arg::with_name("modify")
@@ -34,6 +35,7 @@ fn main() -> anyhow::Result<()> {
     if args.is_present("modify") {
         remove_old_workflows().context("failed to delete old workflows")?;
         for (name, value) in expanded {
+            println!("Emitting {}", name);
             let value = serde_yaml::to_vec(&value)?;
             let path = Path::new(".github/workflows").join(format!("{}.yaml", name));
             std::fs::write(path, value)?;
@@ -101,7 +103,7 @@ fn load_yamls(path: &Path) -> Result<HashMap<String, Value>> {
     for item in dir_iter {
         let item = item?;
         let path = item.path();
-        if !path.ends_with(".yaml") {
+        if path.extension() != Some(std::ffi::OsStr::new("yaml")) {
             continue;
         }
         let name = path
@@ -131,6 +133,7 @@ fn expand_templates(templates: &TemplatesData) -> Result<HashMap<String, Value>>
     let mut expanded = HashMap::new();
 
     for (name, workflow) in &templates.workflows {
+        println!("Expanding {}", name);
         let expanded_workflow = expand_value(workflow, &templates.blocks)
             .with_context(|| format!("Error in workflow {}", name))?;
         expanded.insert(name.clone(), expanded_workflow);
@@ -139,7 +142,7 @@ fn expand_templates(templates: &TemplatesData) -> Result<HashMap<String, Value>>
 }
 
 fn expand_value(value: &serde_yaml::Value, blocks: &HashMap<String, Value>) -> Result<Value> {
-    if let Ok(action) = serde_yaml::from_value::<TemplateAction>(value.clone()) {
+    if let Some(action) = parse_template_action(value) {
         match blocks.get(&action.include) {
             Some(block) => Ok(block.clone()),
             None => bail!("unknown $include: {}", action.include),
@@ -167,6 +170,13 @@ fn expand_value(value: &serde_yaml::Value, blocks: &HashMap<String, Value>) -> R
             }
         }
     }
+}
+
+fn parse_template_action(value: &Value) -> Option<TemplateAction> {
+    if !value.is_mapping() {
+        return None;
+    }
+    serde_yaml::from_value(value.clone()).ok()
 }
 
 #[derive(serde::Deserialize)]

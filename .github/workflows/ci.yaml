@@ -1,6 +1,7 @@
-name: 'ci'
-on:
-  push: 
+---
+name: ci
+"on":
+  push:
     branches:
       - master
   pull_request: {}
@@ -8,7 +9,7 @@ env:
   RUST_BACKTRACE: 1
 jobs:
   rustfmt:
-    runs-on: 'ubuntu-18.04'
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
@@ -19,13 +20,17 @@ jobs:
       - uses: actions-rs/cargo@v1
         with:
           command: fmt
-          args: -- --check
+          args: "-- --check"
   clippy:
-    runs-on: 'ubuntu-18.04'
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - $include: install-rust-msrv
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: 1.40.0
+          override: true
+          components: clippy
       - uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: -- -Dwarnings    
+          args: "-- -Dwarnings"
