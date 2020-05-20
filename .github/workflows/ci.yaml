@@ -19,7 +19,8 @@ jobs:
           components: "rustfmt,clippy"
       - uses: actions-rs/cargo@v1
         with:
-          command: fmt --check
+          command: fmt
+          args: "--check"
   clippy:
     runs-on: ubuntu-18.04
     steps:
@@ -31,4 +32,5 @@ jobs:
           components: "rustfmt,clippy"
       - uses: actions-rs/cargo@v1
         with:
-          command: clippy -Dwarnings
+          command: clippy
+          args: "-Dwarnings"
