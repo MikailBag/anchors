@@ -1,7 +1,9 @@
 ---
 name: ci
 "on":
-  push: {}
+  push:
+    branches:
+      - master
   pull_request: {}
 env:
   RUST_BACKTRACE: 1

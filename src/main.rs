@@ -142,7 +142,7 @@ fn expand_templates(templates: &TemplatesData) -> Result<HashMap<String, Value>>
 }
 
 fn expand_value(value: &serde_yaml::Value, blocks: &HashMap<String, Value>) -> Result<Value> {
-    if let Ok(action) = serde_yaml::from_value::<TemplateAction>(value.clone()) {
+    if let Some(action) = parse_template_action(value) {
         match blocks.get(&action.include) {
             Some(block) => Ok(block.clone()),
             None => bail!("unknown $include: {}", action.include),
@@ -170,6 +170,13 @@ fn expand_value(value: &serde_yaml::Value, blocks: &HashMap<String, Value>) -> R
             }
         }
     }
+}
+
+fn parse_template_action(value: &Value) -> Option<TemplateAction> {
+    if !value.is_mapping() {
+        return None;
+    }
+    serde_yaml::from_value(value.clone()).ok()
 }
 
 #[derive(serde::Deserialize)]
