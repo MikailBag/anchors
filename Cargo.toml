@@ -1,0 +1,11 @@
+[package]
+name = "anchors"
+version = "0.1.0"
+authors = ["Mikail Bagishov <bagishov.mikail@yandex.ru>"]
+edition = "2018"
+
+[dependencies]
+clap = "2.33.1"
+serde_yaml = "0.8.12"
+anyhow = "1.0.31"
+serde = { version = "1.0.110", features = ["derive"] }
