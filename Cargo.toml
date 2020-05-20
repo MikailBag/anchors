@@ -13,7 +13,7 @@ anyhow = "1.0.31"
 serde = { version = "1.0.110", features = ["derive"] }
 
 [package.metadata.wharf.builder]
-image = "rust"
+image = "clux/muslrust:1.45.0-nightly-2020-05-19"
 target = "x86_64-unknown-linux-musl"
 
 [package.metadata.wharf.output]
