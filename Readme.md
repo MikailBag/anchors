@@ -6,7 +6,7 @@
 # Install: 
 cargo install --git https://github.com/mikailbag/anchors
 # Use:
-anchors
+anchors -t actions_dir
 ```
 ### Docker
 ```bash
