@@ -14,6 +14,7 @@ serde = { version = "1.0.110", features = ["derive"] }
 
 [package.metadata.wharf.builder]
 image = "rust"
+target = "x86_64-unknown-linux-musl"
 
 [package.metadata.wharf.output]
 image = "alpine"
