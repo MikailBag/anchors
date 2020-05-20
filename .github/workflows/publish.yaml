@@ -14,11 +14,6 @@ jobs:
       DOCKER_BUILDKIT: 1
     steps:
       - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: 1.40.0
-          override: true
-          components: clippy
       - name: Build image
         run: "docker build -f Cargo.toml -t docker.pkg.github.com/mikailbag/anchors/anchors:master ."
       - name: Publish image
