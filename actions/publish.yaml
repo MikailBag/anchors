@@ -1,0 +1,21 @@
+name: 'publish'
+on:
+  push: 
+    branches:
+      - master
+      - publish
+env:
+  RUST_BACKTRACE: 1
+jobs:
+  docker:
+    runs-on: 'ubuntu-18.04'
+    env:
+      DOCKER_BUILDKIT: 1
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build image
+        run: docker build -f Cargo.toml -t docker.pkg.github.com/mikailbag/anchors/anchors:master .
+      - name: Publish image
+        run: |
+          docker login --username mikailbag --password ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
+          docker push docker.pkg.github.com/mikailbag/anchors/anchors:master

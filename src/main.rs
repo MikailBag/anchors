@@ -6,6 +6,8 @@ fn main() -> anyhow::Result<()> {
     let args = clap::App::new("anchors")
         .arg(
             clap::Arg::with_name("templates-dir")
+                .long("templates")
+                .short("t")
                 .takes_value(true)
                 .help("path to templates dir")
                 .long_help(
